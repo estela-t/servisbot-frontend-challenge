@@ -1,4 +1,4 @@
-type StatusType = "ENABLED" | "DISABLED" | "PAUSED"
+export type StatusType = "ENABLED" | "DISABLED" | "PAUSED"
 
 export interface IBot {
   id: string

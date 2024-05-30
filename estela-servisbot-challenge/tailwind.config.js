@@ -5,10 +5,11 @@ export default {
     extend: {
       colors: {
         primary: "#2047CE",
+        primaryTransparency: "rgba(32,71,206,0.2)",
         secondary: "#fb7000",
-        success: "#009688",
-        error: "#e53935",
-        warning: "#ffc107",
+        success: "#80cbc4",
+        error: "#e57373",
+        warning: "#ffe082",
         mainBg: "#f9f4f1",
         primaryText: "#232426",
       },
@@ -18,8 +19,8 @@ export default {
     function ({ addUtilities }) {
       addUtilities({
         ".wrapper": {
-          width: "90%",
-          "max-width": "1400px",
+          width: "85%",
+          "max-width": "1200px",
           margin: "auto",
         },
       })

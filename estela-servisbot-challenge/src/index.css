@@ -9,8 +9,22 @@ body {
 
 /* Typography */
 h1 {
-  font-size: 2rem;
+  font-size: 1.5rem;
   font-weight: 600;
+}
+
+h2 {
+  font-size: 1.25rem;
+  margin-bottom: 28px;
+}
+
+a {
+  transition: 0.3s;
+}
+a.button-link:focus,
+a.button-link:hover {
+  outline: none;
+  background-color: theme("colors.primaryTransparency");
 }
 
 /* Buttons */
@@ -52,6 +66,9 @@ button {
 /* above md (breakpoint used by tailwind) */
 @media (min-width: 768px) {
   h1 {
-    font-size: 3rem;
+    font-size: 1.8rem;
+  }
+  h2 {
+    font-size: 1.5rem;
   }
 }
