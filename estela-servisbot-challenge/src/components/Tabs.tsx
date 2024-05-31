@@ -9,9 +9,13 @@ interface Props {
   tabs: Tab[]
 }
 
+// I considered using a library for the tabs component, just for ease
+// but wanted to show a very simple no-library implementation of an accessible component
+
 const Tabs = ({ tabs }: Props) => {
   const [activeTabIndex, setActiveTabIndex] = useState(0)
 
+  // mouse and keyboard events so component can be used with a keyboard
   const handleKeyDown = (
     event: React.KeyboardEvent<HTMLButtonElement>,
     index: number

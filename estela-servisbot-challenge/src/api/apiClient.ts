@@ -20,26 +20,30 @@ export const fetchBotById = async (botId: string) => {
 
 export const fetchWorkersByBotName = async (botName: string) => {
   const workers = await fetchData(`/data/workers.json`)
-  console.log("bot name", botName)
   return workers.filter((worker: { bot: string }) => worker.bot === botName)
 }
 
-export const fetchLogsByBotId = async (
+export const fetchLogs = async (
   botId: string,
   page: number,
-  pageSize: number
+  pageSize: number,
+  workerId?: string
 ) => {
   const logs = await fetchData(`/data/logs.json`)
-  const filteredLogs = logs.filter((log: { bot: string }) => log.bot === botId)
+  let filteredLogs = logs.filter((log: { bot: string }) => log.bot === botId)
+
+  // if we've filtered by a worker, get just those logs
+  if (workerId) {
+    filteredLogs = filteredLogs.filter(
+      (log: { worker: string }) => log.worker === workerId
+    )
+  }
+
   const totalLogs = filteredLogs.length
   const paginatedLogs = filteredLogs.slice(
     (page - 1) * pageSize,
     page * pageSize
   )
-  return { totalLogs, paginatedLogs }
-}
 
-export const fetchLogsByWorkerId = async (workerId: string) => {
-  const logs = await fetchData(`/data/logs.json`)
-  return logs.filter((log: { worker: string }) => log.worker === workerId)
+  return { totalLogs, paginatedLogs }
 }

@@ -5,6 +5,7 @@ import BotsPage from "./pages/BotsPage"
 import BotPage from "./pages/BotPage"
 
 const App = () => {
+  // initializing our query client for react-query
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
@@ -13,7 +14,7 @@ const App = () => {
     },
   })
 
-  // Routes
+  // routes
   const router = createBrowserRouter([
     {
       element: <Layout />,

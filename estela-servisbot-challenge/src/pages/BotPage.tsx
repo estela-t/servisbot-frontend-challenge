@@ -6,7 +6,7 @@ import { FaArrowLeft } from "react-icons/fa"
 import Tabs from "../components/Tabs"
 import {
   fetchBotById,
-  fetchLogsByBotId,
+  fetchLogs,
   fetchWorkersByBotName,
 } from "../api/apiClient"
 import Table from "../components/Table"
@@ -23,14 +23,18 @@ import Pagination from "../components/Pagination"
 const BotPage = () => {
   const { botId } = useParams()
   const [botName, setBotName] = useState("")
+
+  // pagination state for logs call
   const [logPage, setLogPage] = useState(1)
   const logPageSize = 10
+
+  const [selectedWorkerId, setSelectedWorkerId] = useState("")
 
   // getting single bot data
   const { data: bot, isFetching: isFetchingBot } = useQuery({
     queryKey: ["bot"],
     queryFn: async () => await fetchBotById(botId as string),
-    enabled: !!botId,
+    enabled: !!botId, // will only run this query once we have a botId
   })
 
   // getting workers data
@@ -41,21 +45,24 @@ const BotPage = () => {
     select: (data) =>
       data.map((worker: IWorker) => ({
         ...worker,
+        // transform date data into a nice format
         created: formatDateFromEpochTimestamp(worker.created),
       })),
   })
 
   // getting paginated bot logs data
-  const { data: logsData, isFetching: isFetchingLogs } = useQuery({
-    queryKey: ["botLogs", botId, logPage],
+  const { data: logsData } = useQuery({
+    queryKey: ["botLogs", botId, logPage, selectedWorkerId],
     queryFn: async () =>
-      await fetchLogsByBotId(botId as string, logPage, logPageSize),
+      await fetchLogs(botId as string, logPage, logPageSize, selectedWorkerId),
     enabled: botId !== null && botId !== undefined,
     keepPreviousData: true,
     select: (data) => ({
+      // adding the total pages of our call to the react query data
       totalLogs: data.totalLogs,
       paginatedLogs: data.paginatedLogs.map((log: ILog) => ({
         ...log,
+        // transform date data into a nice format
         created: formatDateFromISO(log.created),
       })),
     }),
@@ -66,7 +73,14 @@ const BotPage = () => {
     : 1
 
   const handleLogPageChange = (newPage: number) => {
+    // updating our pagination from prev/next buttons
     setLogPage(newPage)
+  }
+
+  const handleWorkerFilterChange = (workerId: string) => {
+    // setting this state will trigger our call to get logs to run again
+    // giving us fresh logs and correct paginaiton
+    setSelectedWorkerId(workerId)
   }
 
   const workerColumns = ["Name", "Description", "Created"]
@@ -80,7 +94,11 @@ const BotPage = () => {
       label: "Logs",
       content: (
         <>
-          <Logs logs={logsData ? logsData.paginatedLogs : []} />
+          <Logs
+            logs={logsData ? logsData.paginatedLogs : []}
+            workers={workers ? workers : []}
+            onWorkerFilterChange={handleWorkerFilterChange}
+          />
           <Pagination
             currentPage={logPage}
             totalPages={totalLogPages}

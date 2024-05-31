@@ -4,7 +4,6 @@ interface Props<T> {
 }
 
 const Table = <T,>({ columns, rows }: Props<T>) => {
-  console.log("rows", rows)
   return (
     <table className="w-3/4">
       <thead>
