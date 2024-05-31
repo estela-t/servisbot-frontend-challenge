@@ -24,6 +24,21 @@ export const fetchWorkersByBotName = async (botName: string) => {
   return workers.filter((worker: { bot: string }) => worker.bot === botName)
 }
 
+export const fetchLogsByBotId = async (
+  botId: string,
+  page: number,
+  pageSize: number
+) => {
+  const logs = await fetchData(`/data/logs.json`)
+  const filteredLogs = logs.filter((log: { bot: string }) => log.bot === botId)
+  const totalLogs = filteredLogs.length
+  const paginatedLogs = filteredLogs.slice(
+    (page - 1) * pageSize,
+    page * pageSize
+  )
+  return { totalLogs, paginatedLogs }
+}
+
 export const fetchLogsByWorkerId = async (workerId: string) => {
   const logs = await fetchData(`/data/logs.json`)
   return logs.filter((log: { worker: string }) => log.worker === workerId)

@@ -28,23 +28,33 @@ const Tabs = ({ tabs }: Props) => {
 
   return (
     <div className="mt-10">
-      <ul role="tablist" aria-label="Tabs Navigation" className="flex gap-2">
-        {tabs.map((tab, i) => (
-          <li key={i}>
-            <button
-              role="tab"
-              id={`tab-${i}`}
-              aria-selected={activeTabIndex === i}
-              aria-controls={`panel-${i}`}
-              tabIndex={activeTabIndex === i ? 0 : -1}
-              onClick={() => handleClick(i)}
-              onKeyDown={(event) => handleKeyDown(event, i)}
-            >
-              {tab.label}
-            </button>
-          </li>
-        ))}
-      </ul>
+      <div className="flex justify-center relative tabs">
+        <ul
+          role="tablist"
+          aria-label="Tabs Navigation"
+          className="flex gap-2 w-fit bg-primaryTransparency rounded-lg mb-4 p-2 "
+        >
+          {tabs.map((tab, i) => (
+            <li key={i}>
+              <button
+                role="tab"
+                id={`tab-${i}`}
+                aria-selected={activeTabIndex === i}
+                aria-controls={`panel-${i}`}
+                onClick={() => handleClick(i)}
+                onKeyDown={(event) => handleKeyDown(event, i)}
+                className={`rounded-lg p-2 hover:bg-primaryTransparency focus:bg-primaryTransparency ${
+                  activeTabIndex === i
+                    ? "bg-mainBg shadow-md hover:bg-mainBg"
+                    : ""
+                }`}
+              >
+                {tab.label}
+              </button>
+            </li>
+          ))}
+        </ul>
+      </div>
       {tabs.map((tab, i) => (
         <div
           key={i}
@@ -58,7 +68,7 @@ const Tabs = ({ tabs }: Props) => {
               el.focus()
             }
           }}
-          className="border-primaryText border-[1px] rounded-b-lg p-4"
+          className="border-primary border-[1px] rounded-lg p-4"
         >
           {tab.content}
         </div>

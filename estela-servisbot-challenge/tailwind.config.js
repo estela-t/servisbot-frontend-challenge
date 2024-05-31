@@ -19,9 +19,20 @@ export default {
     function ({ addUtilities }) {
       addUtilities({
         ".wrapper": {
-          width: "85%",
+          width: "90%",
           "max-width": "1200px",
           margin: "auto",
+        },
+        "@screen sm": {
+          ".wrapper": {
+            width: "85%",
+          },
+        },
+        ".ellipsis": {
+          "max-width": "200px",
+          overflow: "hidden",
+          "text-overflow": "ellipsis",
+          "white-space": "nowrap",
         },
       })
     },
